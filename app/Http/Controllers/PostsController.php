@@ -17,7 +17,7 @@ class PostsController extends Controller
     {
         $users = auth()->user()->following()->pluck('profiles.user_id');
 
-        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(10);
 
         return view('posts.index', compact('posts'));
     }
@@ -29,6 +29,7 @@ class PostsController extends Controller
 
     public function store()
     {
+        $x = \App\Post::max('id');
         $data = request()->validate([
             'caption' => 'required',
             'image' => ['required', 'image'],
@@ -36,12 +37,13 @@ class PostsController extends Controller
 
         $imagePath = request('image')->store('uploads', 'public');
 
-        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
+        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
         $image->save();
 
         auth()->user()->posts()->create([
             'caption' => $data['caption'],
             'image' => $imagePath,
+            'id' => $x + 1
         ]);
 
         return redirect('/profile/' . auth()->user()->id);

@@ -13,6 +13,7 @@
 
 use App\Mail\NewUserWelcomeMail;
 
+
 Auth::routes();
 
 Route::get('/email', function () {

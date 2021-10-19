@@ -15,9 +15,10 @@
                 <div>
                     <p>
                     <span class="font-weight-bold">
+                        <img src="{{ $post->user->profile->profileImage() }}" class="rounded-circle w-100" style="max-width: 40px;" >
                         <a href="/profile/{{ $post->user->id }}">
                             <span class="text-dark">{{ $post->user->username }}</span>
-                        </a>
+                        </a><br>
                     </span> {{ $post->caption }}
                     </p>
                 </div>
